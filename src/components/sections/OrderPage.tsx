@@ -49,12 +49,49 @@ export default function OrderPage() {
   const { available, count, loading } = useStock()
   const [activeZone, setActiveZone] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState(1)
+  
+  // Customer details
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [issubmitting, setIsSubmitting] = useState(false)
+
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true })
 
   const zone = ZONES[activeZone]
   const product = PRODUCTS_ORDER[selectedProduct]
-  const prefill = `Hi Tofuda Da! 👋 Mujhe order karna hai.\n\nProduct: ${product.msg}\nDelivery: ${zone.name}\n\nMera address: [apna address likhein]`
+  
+  const handleOrder = async () => {
+    if (!name || !phone || !address) {
+      alert('Bhai, please saari details bhar do!')
+      return
+    }
+
+    setIsSubmitting(true)
+    
+    // 1. Sync with Supabase (Dashboard)
+    const client = (await import('@/lib/supabase')).getSupabaseClient()
+    if (client) {
+      await client.from('orders').insert({
+        customer_name: name,
+        customer_phone: phone,
+        address: `${address}, ${zone.name}`,
+        product_id: 'soy-paneer',
+        weight: product.label.split(' ').pop(),
+        quantity: 1,
+        total_price: parseInt(product.price.replace('₹', '')),
+        status: 'pending'
+      })
+    }
+
+    // 2. Open WhatsApp
+    const prefill = `Namaste Tofuda Da! 🙏\n\nNaya Order:\n✅ Product: ${product.msg}\n📍 Address: ${address}, ${zone.name}\n👤 Customer: ${name}\n\nKripya confirm karein!`
+    const waUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(prefill)}`
+    window.open(waUrl, '_blank')
+    
+    setIsSubmitting(false)
+  }
 
   return (
     <main ref={ref} className="bg-cream min-h-screen pt-24">
@@ -88,7 +125,7 @@ export default function OrderPage() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
           >
-            WhatsApp se order karo — simple, fast, reliable. Usi din delivery.
+            Details bhariye aur WhatsApp pe confirm kariye. Seedha sync dashboard ke saath!
           </motion.p>
         </div>
 
@@ -126,11 +163,42 @@ export default function OrderPage() {
               </div>
             </div>
 
-            {/* Step 2 — Zone */}
+            {/* Step 2 — Customer Details */}
             <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
               <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">2</span>
-                Delivery area chunein
+                Apni details bhariye
+              </h3>
+              <div className="flex flex-col gap-4">
+                <input 
+                  type="text" 
+                  placeholder="Aapka Naam" 
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-[rgba(26,77,46,0.15)] font-body text-[15px] focus:outline-none focus:border-forest bg-cream/20" 
+                />
+                <input 
+                  type="tel" 
+                  placeholder="WhatsApp Number" 
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-[rgba(26,77,46,0.15)] font-body text-[15px] focus:outline-none focus:border-forest bg-cream/20" 
+                />
+                <textarea 
+                  placeholder="Ghar ka address / Landmark" 
+                  rows={2}
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-[rgba(26,77,46,0.15)] font-body text-[15px] focus:outline-none focus:border-forest bg-cream/20 resize-none" 
+                />
+              </div>
+            </div>
+
+            {/* Step 3 — Zone */}
+            <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
+              <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">3</span>
+                Delivery area
               </h3>
               <div className="grid grid-cols-2 gap-2 mb-4">
                 {ZONES.map((z, i) => (
@@ -148,54 +216,39 @@ export default function OrderPage() {
                   >
                     <span className="text-xl block mb-1">{z.emoji}</span>
                     <span className="font-body font-medium text-[14px] text-charcoal">{z.name}</span>
-                    {!z.active && <span className="font-mono text-[9px] text-charcoal/40 uppercase tracking-wider block">Coming soon</span>}
+                    {!z.active && <span className="font-mono text-[9px] text-charcoal/40 uppercase tracking-wider block">Soon</span>}
                   </button>
                 ))}
               </div>
 
               {zone.active && (
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-charcoal/40 mb-2">
-                    Covered areas:
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {zone.areas.map((area, i) => (
-                      <span key={i} className="bg-cream font-body text-[12px] text-charcoal/70 px-2.5 py-1 rounded-full border border-[rgba(26,77,46,0.1)]">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {zone.areas.map((area, i) => (
+                    <span key={i} className="bg-cream font-body text-[11px] text-charcoal/60 px-2 py-0.5 rounded-full border border-[rgba(26,77,46,0.05)]">
+                      {area}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Step 3 — Slots */}
-            {zone.active && (
-              <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
-                <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">3</span>
-                  Delivery slots
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {zone.slots.map((slot, i) => (
-                    <span key={i} className="bg-mint/40 border border-leaf/30 text-forest font-body font-medium text-[13px] px-4 py-2 rounded-pill">
-                      ⏰ {slot}
-                    </span>
-                  ))}
-                </div>
-                <p className="font-body text-[13px] text-charcoal/50 mt-3">
-                  Morning ke orders: same day. 11am ke baad ka order: evening slot ya agla din.
-                </p>
-              </div>
-            )}
-
-            {/* Big WhatsApp button */}
-            <WhatsAppButton
-              text={!available && !loading ? 'Stock Khatam' : `Order ${product.label} — ${product.price}`}
-              size="lg"
-              prefillMessage={prefill}
-              className={`w-full justify-center ${(!available && !loading) ? 'bg-charcoal/20 pointer-events-none grayscale' : ''}`}
-            />
+            {/* Big Order button */}
+            <button
+              onClick={handleOrder}
+              disabled={!available || issubmitting}
+              className={`w-full flex items-center justify-center gap-3 py-4 rounded-pill font-display text-[18px] transition-all shadow-lg ${
+                !available ? 'bg-charcoal/20 cursor-not-allowed text-charcoal/40' : 'bg-[#4CAF50] text-white hover:bg-[#43a047] active:scale-[0.98]'
+              }`}
+            >
+              {issubmitting ? (
+                'Saving Order...'
+              ) : (
+                <>
+                  <span className="text-2xl">💬</span>
+                  {!available ? 'Stock Khatam' : `Order on WhatsApp — ${product.price}`}
+                </>
+              )}
+            </button>
           </motion.div>
 
           {/* RIGHT — Info + Tofuda Da */}
