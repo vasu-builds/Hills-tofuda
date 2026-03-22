@@ -59,9 +59,10 @@ export default function CustomCursor() {
   }
 
   return (
-    <div className="custom-cursor-container">
+    <div className="custom-cursor-container relative">
+      {/* Outer circle — follows with spring smoothing */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-forest/30 pointer-events-none z-[9999] mix-blend-multiply origin-center"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-forest/30 pointer-events-none z-[100100] mix-blend-multiply origin-center"
         style={{
           x: springX,
           y: springY,
@@ -70,12 +71,13 @@ export default function CustomCursor() {
         }}
         animate={{
           scale: hovered ? 1.5 : 1,
-          opacity: hovered ? 0 : 1,
+          borderColor: hovered ? 'rgba(255, 107, 53, 0.4)' : 'rgba(26, 77, 46, 0.3)',
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
       />
+      {/* Inner dot — constant follow */}
       <motion.div
-        className="fixed top-0 left-0 w-2.5 h-2.5 rounded-full pointer-events-none z-[10000] mix-blend-multiply origin-center"
+        className="fixed top-0 left-0 w-2.5 h-2.5 rounded-full pointer-events-none z-[100101] mix-blend-multiply origin-center"
         style={{
           x: cursorX,
           y: cursorY,
@@ -83,14 +85,16 @@ export default function CustomCursor() {
           marginTop: '-5px',
         }}
         animate={{
-          scale: hovered ? 2.5 : 1,
+          scale: hovered ? 2.2 : 1,
           backgroundColor: hovered ? '#FF6B35' : '#1A4D2E',
         }}
         transition={{ duration: 0.15, ease: 'easeOut' }}
       />
       <style jsx global>{`
-        a, button, [role="button"] { cursor: pointer; }
+        * { cursor: none !important; }
+        a, button, [role="button"] { cursor: none !important; }
         @media (pointer: coarse) {
+          * { cursor: auto !important; }
           .custom-cursor-container { display: none !important; }
         }
       `}</style>

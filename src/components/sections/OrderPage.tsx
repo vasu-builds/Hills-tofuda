@@ -86,7 +86,7 @@ export default function OrderPage() {
     }
 
     // 2. Open WhatsApp
-    const prefill = `Namaste Tofuda Da! 🙏\n\nNaya Order:\n✅ Product: ${product.msg}\n📍 Address: ${address}, ${zone.name}\n👤 Customer: ${name}\n\nKripya confirm karein!`
+    const prefill = `Namaste Tofu Da! 🙏\n\nNaya Order:\n✅ Product: ${product.msg}\n📍 Address: ${address}, ${zone.name}\n👤 Customer: ${name}\n\nKripya confirm karein!`
     const waUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(prefill)}`
     window.open(waUrl, '_blank')
     

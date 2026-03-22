@@ -63,6 +63,7 @@ export default function RootLayout({
         <LoadingScreen />
         <GoogleAnalytics />
         <GrainOverlay />
+        <CustomCursor />
         <SmoothScrollProvider>
           <PageTransitionProvider>
             {children}
