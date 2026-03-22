@@ -172,14 +172,20 @@ export default function HowToOrder() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
             {STEPS.map((step, i) => (
-              <div key={i}>
-                {/* Step card — GSAP-controlled opacity/transform */}
+              <motion.div 
+                key={i}
+                initial={window.innerWidth < 768 ? { opacity: 0, y: 30 } : {}}
+                whileInView={window.innerWidth < 768 ? { opacity: 1, y: 0 } : {}}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+              >
+                {/* Step card */}
                 <div
                   ref={stepRefs[i]}
                   className="flex flex-col gap-5"
                 >
                   <div
-                    className="rounded-card p-6 md:p-8 border border-white/10 relative overflow-hidden group hover:border-white/20 transition-all duration-300"
+                    className="rounded-card p-6 md:p-8 border border-white/10 relative overflow-hidden group hover:border-white/20 transition-all duration-300 min-h-[220px]"
                     style={{ background: 'rgba(255,255,255,0.05)' }}
                   >
                     {/* Big step number — watermark */}
@@ -220,7 +226,7 @@ export default function HowToOrder() {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

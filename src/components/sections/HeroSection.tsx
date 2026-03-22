@@ -209,6 +209,15 @@ export default function HeroSection() {
       <div className="sticky-container sticky top-0 left-0 w-full h-screen overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#FAF7F0_0%,_#F0EAD6_100%)] opacity-60 mix-blend-multiply" />
         
+        {/* Fallback First Frame — No more black screen */}
+        <div className="absolute inset-0 z-[5] overflow-hidden">
+          <img 
+            src={currentFrame(0)} 
+            alt="Hero Background" 
+            className="w-full h-full object-cover opacity-80"
+          />
+        </div>
+
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-10" />
 
         <div className="absolute inset-0 z-20 pointer-events-none max-w-7xl mx-auto px-6 flex items-center">

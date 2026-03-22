@@ -298,7 +298,7 @@ export default function ProductSpotlight() {
   return (
     <section
       ref={ref}
-      className="relative py-section-mobile md:py-section overflow-hidden"
+      className="relative pt-section-mobile pb-10 md:py-section overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #FAF7F0 0%, #F0EBE0 100%)' }}
     >
       {/* Decorative bg blob */}
