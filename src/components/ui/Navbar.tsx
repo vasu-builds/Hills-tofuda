@@ -53,11 +53,11 @@ export default function Navbar() {
       />
       
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-[10010] transition-all duration-500 ${
-          scrolled ? 'bg-cream/95 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-6'
+        className={`fixed top-0 left-0 right-0 z-[10020] transition-all duration-500 pointer-events-auto ${
+          scrolled ? 'bg-cream/95 backdrop-blur-md py-4 shadow-md' : 'bg-transparent py-6'
         }`}
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: EASE }}
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">

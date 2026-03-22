@@ -210,7 +210,7 @@ function ProductCard3D({ weight, active, onClick, index }: {
             {/* Per gram value */}
             <div className="bg-cream rounded-lg px-3 py-2 mb-3">
               <p className="font-mono text-[10px] uppercase tracking-wider text-forest/70">
-                💪 {weight.perGram} protein
+                💪 {weight.perGram}
               </p>
             </div>
 
