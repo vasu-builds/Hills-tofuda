@@ -90,7 +90,7 @@ export default function WhyPage() {
             🔬 Science-backed
           </motion.span>
           <motion.h1
-            className="font-display text-h1 text-forest leading-display mt-4 mb-4"
+            className="font-display text-4xl md:text-7xl text-forest leading-tight mt-4 mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
@@ -124,7 +124,7 @@ export default function WhyPage() {
         {/* Comparison table */}
         <div ref={tableRef} className="mb-20">
           <motion.h2
-            className="font-display text-h2 text-forest leading-display mb-8 text-center"
+            className="font-display text-3xl md:text-5xl text-forest leading-tight mb-8 text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={tableInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
@@ -167,7 +167,7 @@ export default function WhyPage() {
         {/* Final CTA */}
         <div className="py-16 md:py-24 text-center">
           <TofudaDa size={120} message="Ab convinced ho gaye? 😄" showBubble variant="with-bowl" className="mb-6 mx-auto" />
-          <h2 className="font-display text-h2 text-forest leading-display mb-4">
+          <h2 className="font-display text-3xl md:text-5xl text-forest leading-tight mb-4">
             Try karo, fark mehsoos karo
           </h2>
           <p className="font-body text-charcoal/60 text-[16px] mb-8 max-w-md mx-auto">

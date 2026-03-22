@@ -61,12 +61,14 @@ export default function HowToOrder() {
       })
       gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'left center' })
 
+      const isMobile = window.innerWidth < 768
+
       // Timeline scrubbed to scroll
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 65%',
-          end: 'bottom 80%',
+          start: isMobile ? 'top 80%' : 'top 65%',
+          end: isMobile ? 'bottom 90%' : 'bottom 80%',
           scrub: 1.2,
         },
       })
@@ -139,7 +141,7 @@ export default function HowToOrder() {
           </motion.span>
 
           <motion.h2
-            className="font-display text-h2 text-cream leading-display mt-3 mb-4"
+            className="font-display text-3xl md:text-5xl text-cream leading-tight mt-3 mb-4"
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
@@ -183,7 +185,7 @@ export default function HowToOrder() {
                     {/* Big step number — watermark */}
                     <span
                       className="absolute top-2 right-3 font-display font-bold leading-none select-none pointer-events-none"
-                      style={{ fontSize: '80px', color: 'rgba(255,255,255,0.04)' }}
+                      style={{ fontSize: 'clamp(60px, 10vw, 80px)', color: 'rgba(255,255,255,0.04)' }}
                     >
                       {step.number}
                     </span>

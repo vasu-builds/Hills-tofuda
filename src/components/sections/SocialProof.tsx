@@ -82,7 +82,7 @@ export default function SocialProof() {
             <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-forest/50">04 / Reviews</span>
           </motion.div>
           <motion.h2
-            className="font-display text-h2 text-forest leading-display mb-3"
+            className="font-display text-3xl md:text-5xl text-forest leading-tight mb-3"
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}

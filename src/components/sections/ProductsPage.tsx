@@ -56,7 +56,7 @@ export default function ProductsPage() {
   const inView = useInView(ref, { once: true })
 
   return (
-    <section ref={ref} className="min-h-screen pt-28 pb-section-mobile md:pb-section bg-cream">
+    <section ref={ref} className="min-h-screen pt-24 md:pt-32 pb-16 md:pb-32 bg-cream">
       <div className="max-w-content mx-auto px-6 md:px-8">
 
         {/* Header */}
@@ -69,7 +69,7 @@ export default function ProductsPage() {
             <span className="badge border-forest text-forest">🏔️ Made in Nainital · Fresh Daily</span>
           </motion.div>
           <motion.h1
-            className="font-display text-h1 text-forest leading-display mt-4 mb-4"
+            className="font-display text-4xl md:text-6xl text-forest leading-tight mt-4 mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}

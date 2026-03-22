@@ -123,10 +123,10 @@ export default function HeroSection() {
         <div className="absolute inset-0 z-20 pointer-events-none max-w-7xl mx-auto px-6 flex items-center">
           
           <div ref={section1Ref} className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 w-full">
-            <h1 className="font-playfair text-[#1A4D2E] text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6 drop-shadow-sm">
+            <h1 className="font-playfair text-[#1A4D2E] text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight mb-4 md:mb-6 drop-shadow-sm">
               Nainital ki taazgi,<br/>ab aapke ghar.
             </h1>
-            <p className="font-dm-sans text-[#2C2C2C] text-lg md:text-xl leading-[1.75] max-w-xl mx-auto mb-10 drop-shadow-sm">
+            <p className="font-dm-sans text-[#2C2C2C] text-base md:text-xl leading-[1.6] max-w-md md:max-w-xl mx-auto mb-8 md:mb-10 drop-shadow-sm px-2">
               Pure soy. Mountain air. Made fresh, every morning.
             </p>
             <div className="flex items-center gap-4 pointer-events-auto">
@@ -146,9 +146,9 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div ref={section2Ref} className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 max-w-lg opacity-0">
-            <h2 className="font-playfair text-[#1A4D2E] text-4xl md:text-5xl font-bold leading-[1.05] mb-6 drop-shadow-sm">Pahaad se aata hai<br/>yeh fark.</h2>
-            <p className="font-dm-sans text-[#2C2C2C] text-lg leading-[1.75] mb-4">
+          <div ref={section2Ref} className="absolute left-6 md:left-12 top-[60%] md:top-1/2 -translate-y-1/2 max-w-[280px] sm:max-w-lg opacity-0">
+            <h2 className="font-playfair text-[#1A4D2E] text-3xl md:text-5xl font-bold leading-[1.1] mb-4 md:mb-6 drop-shadow-sm">Pahaad se aata hai<br/>yeh fark.</h2>
+            <p className="font-dm-sans text-[#2C2C2C] text-base md:text-lg leading-[1.6] mb-4">
               Every block begins in the Kumaon hills — clean water, mountain-grown soy, no shortcuts.
             </p>
             <p className="font-dm-sans text-[#2C2C2C] text-lg leading-[1.75] font-semibold">
@@ -166,11 +166,11 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div ref={section3Ref} className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 max-w-lg text-right opacity-0 flex flex-col items-end">
-            <h2 className="font-playfair text-[#1A4D2E] text-4xl md:text-5xl font-bold leading-[1.05] mb-8 drop-shadow-sm">Sirf sahi cheez.<br/>Kuch aur nahi.</h2>
-            <ul className="space-y-4 text-right inline-block">
+          <div ref={section3Ref} className="absolute right-6 md:right-12 top-[60%] md:top-1/2 -translate-y-1/2 max-w-[280px] sm:max-w-lg text-right opacity-0 flex flex-col items-end">
+            <h2 className="font-playfair text-[#1A4D2E] text-3xl md:text-5xl font-bold leading-[1.1] mb-6 md:mb-8 drop-shadow-sm">Sirf sahi cheez.<br/>Kuch aur nahi.</h2>
+            <ul className="space-y-3 md:space-y-4 text-right inline-block">
               {['100% plant-based soy protein.','Zero cholesterol. Rich in calcium.','No preservatives. No compromise.'].map((pt, i) => (
-                <li key={i} className="font-dm-sans text-[#2C2C2C] text-lg md:text-xl font-medium flex items-center justify-end gap-3 drop-shadow-sm">
+                <li key={i} className="font-dm-sans text-[#2C2C2C] text-sm sm:text-base md:text-xl font-medium flex items-center justify-end gap-2 md:gap-3 drop-shadow-sm">
                   {pt} <span className="text-[#4CAF50] flex-shrink-0">✓</span>
                 </li>
               ))}
@@ -185,9 +185,9 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div ref={section4Ref} className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 max-w-xl opacity-0 w-full">
-            <h2 className="font-playfair text-[#1A4D2E] text-4xl md:text-5xl font-bold leading-[1.05] mb-6 drop-shadow-sm">Shakti jo dikhti hai.</h2>
-            <p className="font-dm-sans text-[#2C2C2C] text-lg leading-[1.75] mb-8">
+          <div ref={section4Ref} className="absolute left-6 md:left-12 top-[60%] md:top-1/2 -translate-y-1/2 max-w-xl opacity-0 w-[calc(100%-48px)]">
+            <h2 className="font-playfair text-[#1A4D2E] text-3xl md:text-5xl font-bold leading-[1.1] mb-4 md:mb-6 drop-shadow-sm">Shakti jo dikhti hai.</h2>
+            <p className="font-dm-sans text-[#2C2C2C] text-base md:text-lg leading-[1.6] mb-6 md:mb-8">
               More protein than dairy paneer. More calcium. Less fat. Your body knows the difference.
             </p>
             <div className="space-y-6">
@@ -207,10 +207,10 @@ export default function HeroSection() {
           </div>
 
           <div ref={section5Ref} className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 opacity-0 w-full pointer-events-auto">
-             <h2 className="font-playfair text-[#1A4D2E] text-6xl md:text-8xl font-bold leading-[1.05] mb-6 drop-shadow-sm">
+             <h2 className="font-playfair text-[#1A4D2E] text-4xl sm:text-6xl md:text-8xl font-bold leading-[1.1] mb-6 drop-shadow-sm px-2">
               Taza. Sacha. Pahaadi.
             </h2>
-            <p className="font-dm-sans text-[#2C2C2C] text-xl md:text-2xl leading-[1.75] mb-10 font-medium">
+            <p className="font-dm-sans text-lg md:text-2xl text-[#2C2C2C] leading-[1.6] mb-8 md:mb-10 font-medium">
               Hills Tofuda. Fresh batch, every morning, Nainital.
             </p>
             <div className="flex flex-col items-center gap-6">

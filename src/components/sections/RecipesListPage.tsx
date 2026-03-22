@@ -33,7 +33,7 @@ export default function RecipesListPage() {
             🍳 Tofuda Da ki Recipes
           </motion.span>
           <motion.h1
-            className="font-display text-h1 text-forest leading-display mt-4 mb-3"
+            className="font-display text-4xl md:text-6xl text-forest leading-tight mt-4 mb-3"
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.08, ease: EASE }}

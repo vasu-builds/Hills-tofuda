@@ -61,7 +61,7 @@ export default function OrderPage() {
         {/* Header */}
         <div className="text-center py-12 md:py-16">
           <motion.h1
-            className="font-display text-h1 text-forest leading-display mb-3"
+            className="font-display text-4xl md:text-6xl text-forest leading-tight mb-3"
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}

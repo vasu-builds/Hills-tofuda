@@ -15,9 +15,9 @@ export default function StoryPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   return (
-    <main className="bg-cream">
+    <main className="bg-cream overflow-x-hidden">
       {/* Hero — full screen parallax */}
-      <div ref={heroRef} className="relative h-[90vh] overflow-hidden flex items-end">
+      <div ref={heroRef} className="relative h-[60vh] md:h-[90vh] overflow-hidden flex items-end">
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <Image
             src="/images/product-board.png"
@@ -42,8 +42,8 @@ export default function StoryPage() {
             Our Story
           </motion.span>
           <motion.h1
-            className="font-display text-cream leading-tight-display mb-6"
-            style={{ fontSize: 'clamp(40px, 7vw, 96px)' }}
+            className="font-display text-cream leading-tight mb-6"
+            style={{ fontSize: 'clamp(32px, 8vw, 96px)' }}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
@@ -139,8 +139,8 @@ function StoryChapter({
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, delay: delay + 0.15, ease: EASE }}
       >
-        <span className="font-display text-[80px] text-forest/5 leading-none select-none -mb-4">{number}</span>
-        <h2 className="font-display text-h2 text-forest leading-display">{title}</h2>
+        <span className="font-display text-[60px] md:text-[80px] text-forest/5 leading-none select-none -mb-2 md:-mb-4">{number}</span>
+        <h2 className="font-display text-3xl md:text-5xl text-forest leading-tight">{title}</h2>
         <p className="font-body text-charcoal/70 text-[17px] leading-[1.8]">{body}</p>
         {tofudaDa && (
           <div className="mt-2">
@@ -177,7 +177,7 @@ function ValuesSection() {
   return (
     <div ref={ref} className="py-16 md:py-24">
       <motion.h2
-        className="font-display text-h2 text-forest leading-display mb-12 text-center"
+        className="font-display text-3xl md:text-5xl text-forest leading-tight mb-12 text-center"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: EASE }}

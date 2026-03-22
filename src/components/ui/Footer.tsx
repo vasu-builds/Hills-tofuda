@@ -83,7 +83,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3">
               <li>
                 <a
-                  href="https://wa.me/91XXXXXXXXXX"
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
                   className="flex items-center gap-2 font-body text-[14px] text-cream/60 hover:text-cream transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
