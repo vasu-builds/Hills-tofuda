@@ -25,7 +25,12 @@ export default function HeroSection() {
 
   // Detect mobile on mount
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024) // Higher threshold for heavy canvas
+    const check = () => {
+      const mobile = window.innerWidth < 1024
+      setIsMobile(mobile)
+      // If mobile, we don't need heavy canvas, signal ready for LoadingScreen
+      if (mobile) window.dispatchEvent(new CustomEvent('hero-ready'))
+    }
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
@@ -77,13 +82,30 @@ export default function HeroSection() {
     const firstImg = new window.Image()
     firstImg.src = currentFrame(0)
     images[0] = firstImg
+    
+    let loadedCount = 1
+    const totalToWait = 35 // Wait for at least 35 frames before calling it 'ready'
+
+    const handleImgLoad = () => {
+      loadedCount++
+      const progress = (loadedCount / TOTAL_FRAMES) * 100
+      window.dispatchEvent(new CustomEvent('hero-progress', { detail: { progress } }))
+      
+      if (loadedCount >= totalToWait) {
+        window.dispatchEvent(new CustomEvent('hero-ready'))
+      }
+    }
+
     firstImg.onload = () => {
       render()
-      // Phase 2: Load the rest ONLY if on desktop and after first frame is ready
+      // Initial progress
+      window.dispatchEvent(new CustomEvent('hero-progress', { detail: { progress: 1 } }))
+      
+      // Phase 2: Load the rest ONLY if on desktop
       for (let i = 1; i < TOTAL_FRAMES; i++) {
         const img = new window.Image()
         img.src = currentFrame(i)
-        // Optimization: Lazy-ish loading for the rest
+        img.onload = handleImgLoad
         images[i] = img
       }
     }

@@ -18,43 +18,33 @@ export default function LoadingScreen() {
     sessionStorage.setItem('ht-visited', '1')
     setShown(true)
 
-    // Progress counter — fast then slow then fast (feels real)
-    const steps = [
-      { target: 30,  duration: 400  },
-      { target: 65,  duration: 600  },
-      { target: 85,  duration: 400  },
-      { target: 100, duration: 300  },
-    ]
-    let current = 0
-    let timeouts: NodeJS.Timeout[] = []
+    // Wait for hero to signal readiness
+    const handleReady = () => {
+      // Small delay for smooth transition
+      setTimeout(() => {
+        setPhase('done')
+        setTimeout(() => setPhase('gone'), 800)
+      }, 500)
+    }
 
-    steps.forEach(({ target, duration }, i) => {
-      const delay = steps.slice(0, i).reduce((a, s) => a + s.duration, 0)
-      const t = setTimeout(() => {
-        const start = current
-        const startTime = Date.now()
-        const animate = () => {
-          const elapsed = Date.now() - startTime
-          const prog = Math.min(elapsed / duration, 1)
-          const eased = 1 - Math.pow(1 - prog, 2)
-          const val = Math.round(start + (target - start) * eased)
-          setProgress(val)
-          current = val
-          if (prog < 1) requestAnimationFrame(animate)
-        }
-        requestAnimationFrame(animate)
-      }, delay)
-      timeouts.push(t)
-    })
+    const handleProgress = (e: any) => {
+      const p = e.detail?.progress || 0
+      setProgress(Math.round(p))
+    }
 
-    // After all done — trigger exit
-    const exitT = setTimeout(() => {
-      setPhase('done')
-      setTimeout(() => setPhase('gone'), 1000)
-    }, steps.reduce((a, s) => a + s.duration, 0) + 200)
-    timeouts.push(exitT)
+    window.addEventListener('hero-ready', handleReady)
+    window.addEventListener('hero-progress', handleProgress)
 
-    return () => timeouts.forEach(clearTimeout)
+    // Fallback: don't stay stuck forever
+    const fallback = setTimeout(() => {
+      handleReady()
+    }, 6000)
+
+    return () => {
+      window.removeEventListener('hero-ready', handleReady)
+      window.removeEventListener('hero-progress', handleProgress)
+      clearTimeout(fallback)
+    }
   }, [])
 
   if (phase === 'gone' || !shown) return null
