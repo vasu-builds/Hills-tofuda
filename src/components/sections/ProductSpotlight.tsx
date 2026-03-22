@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import Image from 'next/image'
-import WhatsAppButton from '@/components/ui/WhatsAppButton'
+import Link from 'next/link'
 import TofudaDa from '@/components/ui/TofudaDa'
 import FreshTodayBadge from '@/components/ui/FreshTodayBadge'
 
@@ -447,13 +447,12 @@ export default function ProductSpotlight() {
                     className="flex-shrink-0"
                   />
                 </div>
-                <WhatsAppButton
-                  text={`Order ${active.label} — ₹${active.price}`}
-                  size="lg"
-                  prefillMessage={`Hi Tofuda Da! 👋 Mujhe order karna hai. ${active.label} Soy Paneer — ₹${active.price}.`}
-                  gaSource={`product_spotlight_${active.label}`}
-                  className="flex-1 justify-center py-4 md:py-3.5"
-                />
+                <Link
+                  href="/order"
+                  className="flex-1 bg-[#4CAF50] text-white px-8 py-4 md:py-3.5 rounded-full text-[16px] font-dm-sans font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform"
+                >
+                  Order {active.label} — ₹{active.price}
+                </Link>
               </div>
             </div>
           </motion.div>

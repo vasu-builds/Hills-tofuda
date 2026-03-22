@@ -38,11 +38,11 @@ const tiro = Noto_Sans_Devanagari({
 })
 
 export const metadata: Metadata = {
-  title: 'Hills Tofuda — Nainital ka Soy Paneer',
+  title: 'Hills Tofu Da — Nainital ka Soy Paneer',
   description: 'Fresh soy paneer made in the hills of Nainital. High protein, zero cholesterol, delivered daily. Order via WhatsApp.',
-  keywords: ['soy paneer', 'tofu', 'Nainital', 'Hills Tofuda', 'plant based', 'Tofuda Da'],
+  keywords: ['soy paneer', 'tofu', 'Nainital', 'Hills Tofu Da', 'plant based', 'Tofu Da'],
   openGraph: {
-    title: 'Hills Tofuda — Nainital ka Soy Paneer',
+    title: 'Hills Tofu Da — Nainital ka Soy Paneer',
     description: 'Nainital ki taazgi, ab aapke ghar.',
     type: 'website',
     locale: 'en_IN',
@@ -63,7 +63,6 @@ export default function RootLayout({
         <LoadingScreen />
         <GoogleAnalytics />
         <GrainOverlay />
-        <CustomCursor />
         <SmoothScrollProvider>
           <PageTransitionProvider>
             {children}

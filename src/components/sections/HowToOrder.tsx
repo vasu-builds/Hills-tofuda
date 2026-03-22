@@ -155,7 +155,7 @@ export default function HowToOrder() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
           >
-            No app, no account, no waiting. Seedha WhatsApp se order karo.
+            Hills Tofu Da mangaana ab ekdm simple hai. Seedha WhatsApp se order karo.
           </motion.p>
         </div>
 

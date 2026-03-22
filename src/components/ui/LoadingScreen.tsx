@@ -117,7 +117,7 @@ export default function LoadingScreen() {
             transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
           >
             <h1 className="font-display text-cream text-[32px] md:text-[40px] leading-none mb-1">
-              Hills Tofuda
+              Hills Tofu Da
             </h1>
             <p className="font-hindi text-cream/50 text-[16px]">
               नैनीताल का सोय पनीर
