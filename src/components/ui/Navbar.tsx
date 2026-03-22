@@ -52,10 +52,8 @@ export default function Navbar() {
         style={{ scaleX }}
       />
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-[1000] transition-colors duration-500 ${
-          scrolled
-            ? 'bg-[rgba(250,247,240,0.85)] backdrop-blur-md border-b border-[rgba(26,77,46,0.08)] shadow-[0_4px_30px_rgba(0,0,0,0.03)]'
-            : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+          scrolled ? 'bg-cream/90 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-6'
         }`}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -121,11 +119,10 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu Overlay */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              className="fixed inset-0 bg-cream z-[1000] flex flex-col pt-24 px-8"
+              className="fixed inset-0 bg-[#FAF7F0] z-[10000] flex flex-col pt-24 px-8 overflow-hidden"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
