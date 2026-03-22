@@ -6,7 +6,7 @@ import RecipeDetailPage from '@/components/sections/RecipeDetailPage'
 import { RECIPES, getRecipeBySlug } from '@/lib/recipes'
 
 interface Props {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 // Generate all recipe pages at build time
@@ -16,7 +16,8 @@ export async function generateStaticParams() {
 
 // Per-recipe SEO metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const recipe = getRecipeBySlug(params.slug)
+  const { slug } = await params
+  const recipe = getRecipeBySlug(slug)
   if (!recipe) return {}
 
   return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function RecipePage({ params }: Props) {
-  const recipe = getRecipeBySlug(params.slug)
+export default async function RecipePage({ params }: Props) {
+  const { slug } = await params
+  const recipe = getRecipeBySlug(slug)
   if (!recipe) notFound()
 
   // ── Recipe Schema JSON-LD (Google Rich Results) ──────────────────
