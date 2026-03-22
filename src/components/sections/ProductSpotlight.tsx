@@ -437,20 +437,22 @@ export default function ProductSpotlight() {
               </div>
 
               {/* CTA row */}
-              <div className="flex items-end gap-4">
-                <TofudaDa
-                  size={130}
-                  message={`${active.label} — ekdum sahi choice! 👍`}
-                  showBubble
-                  variant="solo"
-                  className="flex-shrink-0"
-                />
+              <div className="flex flex-col md:flex-row md:items-end gap-6">
+                <div className="hidden md:block">
+                  <TofudaDa
+                    size={130}
+                    message={`${active.label} — ekdum sahi choice! 👍`}
+                    showBubble
+                    variant="solo"
+                    className="flex-shrink-0"
+                  />
+                </div>
                 <WhatsAppButton
                   text={`Order ${active.label} — ₹${active.price}`}
                   size="lg"
                   prefillMessage={`Hi Tofuda Da! 👋 Mujhe order karna hai. ${active.label} Soy Paneer — ₹${active.price}.`}
                   gaSource={`product_spotlight_${active.label}`}
-                  className="flex-1 justify-center"
+                  className="flex-1 justify-center py-4 md:py-3.5"
                 />
               </div>
             </div>

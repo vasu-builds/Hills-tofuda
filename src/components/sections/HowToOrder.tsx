@@ -112,7 +112,7 @@ export default function HowToOrder() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-section-mobile md:py-section bg-forest overflow-hidden"
+      className="relative pt-24 pb-section-mobile md:py-section bg-forest overflow-hidden"
     >
       {/* Subtle diagonal texture */}
       <div
@@ -232,14 +232,16 @@ export default function HowToOrder() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
         >
-          <TofudaDa
-            size={130}
-            message="Main deliver karunga! 🛵"
-            showBubble
-            variant="solo"
-            className="flex-shrink-0"
-          />
-          <div className="flex flex-col gap-3 items-center md:items-start">
+          <div className="hidden md:block">
+            <TofudaDa
+              size={130}
+              message="Main deliver karunga! 🛵"
+              showBubble
+              variant="solo"
+              className="flex-shrink-0"
+            />
+          </div>
+          <div className="flex flex-col gap-3 items-center md:items-start text-center md:text-left">
             <p className="font-body text-cream/65 text-[15px]">
               Delivery: <strong className="text-cream">Nainital · Haldwani · Kathgodam</strong>
             </p>

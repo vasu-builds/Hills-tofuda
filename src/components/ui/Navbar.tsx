@@ -61,7 +61,10 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: EASE }}
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group relative z-[1002]">
+          <Link 
+            href="/" 
+            className={`flex items-center gap-2 group relative z-[1002] transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          >
             <div className="relative w-32 h-10 transition-transform group-hover:scale-105">
               <Image 
                 src="/images/logo-hills-tofuda.jpg" 

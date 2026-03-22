@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
 import TofudaDa from '@/components/ui/TofudaDa'
+import { useStock } from '@/lib/useStock'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -45,6 +46,7 @@ const PRODUCTS_ORDER = [
 ]
 
 export default function OrderPage() {
+  const { available, count, loading } = useStock()
   const [activeZone, setActiveZone] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState(1)
   const ref = useRef<HTMLElement>(null)
@@ -60,6 +62,18 @@ export default function OrderPage() {
 
         {/* Header */}
         <div className="text-center py-12 md:py-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-center justify-center mb-4"
+          >
+            <div className={`px-4 py-1.5 rounded-full inline-flex items-center gap-2 border shadow-sm ${available ? 'bg-mint text-forest border-leaf/20' : 'bg-red-50 text-red-600 border-red-100'}`}>
+              <span className={`w-2 h-2 rounded-full ${available ? 'bg-leaf animate-pulse' : 'bg-red-400'}`} />
+              <span className="font-mono text-[10px] uppercase font-bold tracking-widest">
+                {loading ? 'Checking Stock…' : available ? `Stock: ${count}kg Available Aaj` : 'Stock Khatam — Kal Milenge!'}
+              </span>
+            </div>
+          </motion.div>
           <motion.h1
             className="font-display text-4xl md:text-6xl text-forest leading-tight mb-3"
             initial={{ opacity: 0, y: 30 }}
@@ -88,7 +102,7 @@ export default function OrderPage() {
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
           >
             {/* Step 1 — Product */}
-            <div className="bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6">
+            <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
               <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">1</span>
                 Product chunein
@@ -97,11 +111,12 @@ export default function OrderPage() {
                 {PRODUCTS_ORDER.map((p, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedProduct(i)}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-lg border text-left transition-all duration-200 cursor-pointer ${
+                    onClick={() => available && setSelectedProduct(i)}
+                    disabled={!available}
+                    className={`w-full flex items-center justify-between p-3.5 rounded-lg border text-left transition-all duration-200 ${
                       selectedProduct === i
                         ? 'border-forest bg-mint/30'
-                        : 'border-[rgba(26,77,46,0.12)] hover:border-forest/30'
+                        : available ? 'border-[rgba(26,77,46,0.12)] hover:border-forest/30 cursor-pointer' : 'border-[rgba(26,77,46,0.05)] cursor-not-allowed'
                     }`}
                   >
                     <span className="font-body font-medium text-[15px] text-charcoal">{p.label}</span>
@@ -112,7 +127,7 @@ export default function OrderPage() {
             </div>
 
             {/* Step 2 — Zone */}
-            <div className="bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6">
+            <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
               <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">2</span>
                 Delivery area chunein
@@ -121,12 +136,12 @@ export default function OrderPage() {
                 {ZONES.map((z, i) => (
                   <button
                     key={i}
-                    onClick={() => z.active && setActiveZone(i)}
-                    disabled={!z.active}
+                    onClick={() => available && z.active && setActiveZone(i)}
+                    disabled={!z.active || !available}
                     className={`p-3 rounded-lg border text-left transition-all duration-200 ${
                       activeZone === i && z.active
                         ? 'border-forest bg-mint/30'
-                        : z.active
+                        : z.active && available
                         ? 'border-[rgba(26,77,46,0.12)] hover:border-forest/30 cursor-pointer'
                         : 'border-[rgba(26,77,46,0.06)] opacity-50 cursor-not-allowed'
                     }`}
@@ -156,7 +171,7 @@ export default function OrderPage() {
 
             {/* Step 3 — Slots */}
             {zone.active && (
-              <div className="bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6">
+              <div className={`bg-white rounded-card border border-[rgba(26,77,46,0.12)] p-6 transition-opacity ${!available && !loading ? 'opacity-50' : 'opacity-100'}`}>
                 <h3 className="font-display text-[20px] text-forest mb-4 flex items-center gap-2">
                   <span className="w-6 h-6 rounded-full bg-forest text-cream text-[12px] font-mono flex items-center justify-center flex-shrink-0">3</span>
                   Delivery slots
@@ -176,10 +191,10 @@ export default function OrderPage() {
 
             {/* Big WhatsApp button */}
             <WhatsAppButton
-              text={`Order ${product.label} — ${product.price}`}
+              text={!available && !loading ? 'Stock Khatam' : `Order ${product.label} — ${product.price}`}
               size="lg"
               prefillMessage={prefill}
-              className="w-full justify-center"
+              className={`w-full justify-center ${(!available && !loading) ? 'bg-charcoal/20 pointer-events-none grayscale' : ''}`}
             />
           </motion.div>
 

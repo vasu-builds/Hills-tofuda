@@ -8,14 +8,14 @@ import Image from 'next/image'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const TOTAL_FRAMES = 240
+const TOTAL_FRAMES = 120 // Half the frames for faster loading and less memory/CPU usage
 const currentFrame = (index: number) =>
-  `/ezgif-2de718434e2446ac-jpg/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
+  `/ezgif-2de718434e2446ac-jpg/ezgif-frame-${(index * 2 + 1).toString().padStart(3, '0')}.jpg` // Skip every other frame to keep the 120 sequence
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null) // Start as null to avoid wrong default choke
 
   const section1Ref = useRef<HTMLDivElement>(null)
   const section2Ref = useRef<HTMLDivElement>(null)
@@ -25,7 +25,7 @@ export default function HeroSection() {
 
   // Detect mobile on mount
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
+    const check = () => setIsMobile(window.innerWidth < 1024) // Higher threshold for heavy canvas
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
@@ -33,13 +33,13 @@ export default function HeroSection() {
 
   // ── Desktop: full canvas scroll animation ─────────────────────────
   useEffect(() => {
-    if (isMobile) return // Skip entirely on mobile
+    if (isMobile === true || isMobile === null) return // Skip on mobile OR before detection
 
     const container = containerRef.current
     const canvas = canvasRef.current
     if (!container || !canvas) return
 
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: false }) // Performance opt
     if (!ctx) return
 
     const resizeCanvas = () => {
@@ -51,12 +51,7 @@ export default function HeroSection() {
     const images: HTMLImageElement[] = []
     const loadingState = { frame: 0 }
 
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new window.Image()
-      img.src = currentFrame(i)
-      images.push(img)
-    }
-
+    // Optimization: Pre-load EXACTLY what we need, not extra
     const render = () => {
       const img = images[loadingState.frame]
       if (img && img.complete) {
@@ -74,12 +69,25 @@ export default function HeroSection() {
           drawWidth = canvas.height * imageRatio
           startX = (canvas.width - drawWidth) / 2
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, startX, startY, drawWidth, drawHeight)
       }
     }
 
-    images[0].onload = render
+    // Phase 1: Load first frame immediately
+    const firstImg = new window.Image()
+    firstImg.src = currentFrame(0)
+    images[0] = firstImg
+    firstImg.onload = () => {
+      render()
+      // Phase 2: Load the rest ONLY if on desktop and after first frame is ready
+      for (let i = 1; i < TOTAL_FRAMES; i++) {
+        const img = new window.Image()
+        img.src = currentFrame(i)
+        // Optimization: Lazy-ish loading for the rest
+        images[i] = img
+      }
+    }
+
     window.addEventListener('resize', resizeCanvas)
     resizeCanvas()
 
@@ -88,12 +96,19 @@ export default function HeroSection() {
         trigger: container,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1,
+        scrub: 0.5, // Smoother scrub
         pin: '.sticky-container',
       }
     })
 
-    tl.to(loadingState, { frame: TOTAL_FRAMES - 1, snap: 'frame', ease: 'none', duration: 1, onUpdate: () => render() }, 0)
+    tl.to(loadingState, { 
+      frame: TOTAL_FRAMES - 1, 
+      snap: 'frame', 
+      ease: 'none', 
+      duration: 1, 
+      onUpdate: () => render() 
+    }, 0)
+    
     tl.to(section1Ref.current, { opacity: 0, y: -50, duration: 0.15 }, 0.05)
     tl.fromTo(section2Ref.current, { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.1 }, 0.15)
     tl.to(section2Ref.current, { opacity: 0, x: -50, duration: 0.1 }, 0.3)
@@ -109,6 +124,7 @@ export default function HeroSection() {
       window.removeEventListener('resize', resizeCanvas)
     }
   }, [isMobile])
+
 
   // ── Mobile: simple static hero ────────────────────────────────────
   if (isMobile) {
