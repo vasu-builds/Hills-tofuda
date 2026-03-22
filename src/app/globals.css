@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Tiro+Devanagari:ital@0;1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --forest: #1A4D2E;
+  --forest-dark: #0F2E1A;
+  --leaf: #4CAF50;
+  --cream: #FAF7F0;
+  --cream-dark: #F0EBE0;
+  --soy-beige: #D4B896;
+  --mint: #C8E6C9;
+  --charcoal: #2C2C2C;
+  --accent-orange: #FF6B35;
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--charcoal);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--forest);
+  z-index: 10000;
+  transform-origin: left;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--soy-beige);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--forest);
+}
+
+/* Selection */
+::selection {
+  background: var(--forest);
+  color: var(--cream);
+}
+
+/* Thin green-tinted borders */
+.border-brand {
+  border: 1px solid rgba(26, 77, 46, 0.15);
+}
+
+/* CSS 3D Tofu Block */
+.tofu-scene {
+  perspective: 600px;
+  perspective-origin: 50% 50%;
+}
+
+.tofu-cube {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: tofu-rotate 12s linear infinite;
+}
+
+.tofu-cube .face {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  backface-visibility: hidden;
+}
+
+.tofu-cube .face-front  { transform: translateZ(90px);  background: #F5F0E8; }
+.tofu-cube .face-back   { transform: translateZ(-90px) rotateY(180deg); background: #EDE7D9; }
+.tofu-cube .face-right  { transform: translateX(90px) rotateY(90deg);  background: #E8E2D4; }
+.tofu-cube .face-left   { transform: translateX(-90px) rotateY(-90deg); background: #EDE7D9; }
+.tofu-cube .face-top    { transform: translateY(-90px) rotateX(90deg);  background: #F5F0E8; }
+.tofu-cube .face-bottom { transform: translateY(90px) rotateX(-90deg); background: #DDD7C9; }
+
+/* Face textures */
+.tofu-cube .face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 18px,
+    rgba(180, 160, 120, 0.07) 18px,
+    rgba(180, 160, 120, 0.07) 19px
+  );
+}
+
+.tofu-cube .face-front::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(180, 160, 120, 0.4);
+  box-shadow: -30px -20px 0 rgba(180, 160, 120, 0.25), 25px 15px 0 rgba(180, 160, 120, 0.2);
+}
+
+/* Border lines on tofu */
+.tofu-cube .face {
+  border: 1px solid rgba(200, 185, 155, 0.4);
+  box-shadow: inset 0 0 30px rgba(200, 185, 155, 0.1);
+}
+
+@keyframes tofu-rotate {
+  0%   { transform: rotateX(-15deg) rotateY(0deg); }
+  100% { transform: rotateX(-15deg) rotateY(360deg); }
+}
+
+/* Tofuda Da speech bubble */
+.speech-bubble {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  border: 2px solid var(--accent-orange);
+  padding: 12px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--charcoal);
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 var(--accent-orange);
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 24px;
+  border: 6px solid transparent;
+  border-top-color: var(--accent-orange);
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 25px;
+  border: 5px solid transparent;
+  border-top-color: white;
+  z-index: 1;
+}
+
+/* WhatsApp button pulse */
+.whatsapp-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  background: var(--leaf);
+  opacity: 0;
+  animation: pulse_ring 2.5s ease-out infinite;
+}
+
+@keyframes pulse_ring {
+  0%   { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Mountain SVG layers */
+.mountain-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  animation: bounce_scroll 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce_scroll {
+  0%, 100% { transform: translateY(0) rotate(45deg); }
+  50%       { transform: translateY(8px) rotate(45deg); }
+}
+
+/* Typography utilities */
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+.font-hindi   { font-family: 'Tiro Devanagari', serif; }
+.font-mono    { font-family: 'DM Mono', monospace; }
+
+/* Nav link hover */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--forest);
+  transition: width 0.3s var(--ease-snappy);
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Badge */
+.badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+
+/* Green dot pulse */
+.green-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--leaf);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+.green-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: var(--leaf);
+  opacity: 0;
+  animation: pulse_ring 1.5s ease-out infinite;
+}
+
+/* Prevent layout shift on load */
+.font-loaded body {
+  visibility: visible;
+}
+
+/* Hide scrollbar on horizontal recipe scroll */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Tofuda Da — GSAP handles float */
+.tofuda-mascot {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Wink — targets pseudo eye elements if SVG mascot is used */
+@keyframes tofuda-wink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 98%      { transform: scaleY(0.08); }
+}
+.tofuda-eye {
+  animation: tofuda-wink 5s ease-in-out infinite;
+  transform-origin: center;
+}
+@media (max-width: 768px) {
+  .tofu-cube {
+    width: 120px;
+    height: 120px;
+  }
+  .tofu-cube .face { width: 120px; height: 120px; }
+  .tofu-cube .face-front  { transform: translateZ(60px); }
+  .tofu-cube .face-back   { transform: translateZ(-60px) rotateY(180deg); }
+  .tofu-cube .face-right  { transform: translateX(60px) rotateY(90deg); }
+  .tofu-cube .face-left   { transform: translateX(-60px) rotateY(-90deg); }
+  .tofu-cube .face-top    { transform: translateY(-60px) rotateX(90deg); }
+  .tofu-cube .face-bottom { transform: translateY(60px) rotateX(-90deg); }
+}

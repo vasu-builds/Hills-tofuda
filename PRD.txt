@@ -1,0 +1,385 @@
+﻿
+HILLS TOFUDA
+Design PRD + Dev Spec
+Nainital ka Soy Paneer Brand
+
+Cinematic Storytelling Website  •  WhatsApp Commerce  •  Owner Dashboard
+
+01. Brand Soul &amp; Design Philosophy
+Hills Tofuda is not just a tofu brand. It is Nainital in a block — misty mountains, clean air, honest food. Every pixel of this website must feel like that. No stock photo energy. No generic food-brand templates. This is a place-based, character-led, story-first brand.
+
+The one thing someone must remember
+Tofuda Da baat karta hai.
+Not a logo. Not a product. A character who lives on this site — who guides, who jokes, who sells. Everything else is set design. Tofuda Da is the soul.
+
+Aesthetic direction — Organic Luxury Editorial
+Think: a Nainital cafe&apos;s handwritten menu meets a luxury food magazine. Warm, earthy, confident. Not minimalist to the point of coldness. Not maximalist to the point of noise. The aesthetic sits in the specific zone of &quot;this was designed by someone who actually loves this food and this place.&quot;
+
+TONE WORDS
+Warm — like a Kumaoni kitchen
+Confident — not apologetic about tofu
+Local — Nainital pride, not generic India
+Playful — Tofuda Da ki awaaz
+Premium — without being unrelatable
+WHAT THIS IS NOT
+Not purple-gradient AI slop
+Not generic food delivery app
+Not corporate health-food brand
+Not trying to look like a startup
+Not boring serif on white
+
+02. Design System
+Color Palette
+Role
+Color + Usage
+Forest Green
+#1A4D2E — Primary brand. Headlines, nav, CTAs, Tofuda Da&apos;s outfit.
+Leaf Green
+#4CAF50 — Buttons, active states, &quot;Fresh Today&quot; badge.
+Cream
+#FAF7F0 — Page background. Warm, not harsh white.
+Soy Beige
+#D4B896 — Warm accents, dividers, card borders.
+Mint
+#C8E6C9 — Card backgrounds, info panels.
+Charcoal
+#2C2C2C — Body text. Never pure black.
+Accent Orange
+#FF6B35 — Tofuda Da speech bubbles, highlights, hover sparks.
+
+Typography
+Role
+Font + Usage
+Display / Hero
+Playfair Display — Large headlines, hero text, pull quotes. Warm, editorial, recognisable.
+Body / UI
+DM Sans — Body copy, nav, buttons, labels. Clean but not sterile.
+Accent Hindi
+Tiro Devanagari — For Hindi moments like taglines. Strategic, not decorative.
+Mono / Tags
+DM Mono — Nutrition labels, ingredient tags, badge text.
+
+TYPE SCALE
+Hero: Playfair Display, 80–120px, line-height 1.05, Forest Green
+H1: Playfair Display, 56px, line-height 1.1
+H2: Playfair Display, 40px, DM Sans fallback
+H3: DM Sans 600, 28px
+Body: DM Sans 400, 16–18px, line-height 1.75, Charcoal
+Caption / Label: DM Mono, 12px, uppercase, letter-spacing 0.1em
+CTA Button: DM Sans 600, 15px, uppercase
+
+Spacing &amp; Layout
+Base unit: 8px. All spacing in multiples of 8. Max content width: 1280px. Section padding: 120px vertical on desktop, 64px on mobile.
+Grid: 12-column, 24px gutter desktop, 16px mobile
+Border radius: 4px (buttons), 12px (cards), 24px (pill badges), 0 (hero images)
+Thin borders: 1px solid rgba(26,77,46,0.15) — green-tinted, not gray
+
+03. Animation &amp; Motion System
+Philosophy
+Every animation earns its place. Motion is storytelling — it guides the eye, reveals content, creates emotion. No animations just for showing off. The site should feel alive, not restless.
+
+Easing Curves — The Secret to Premium Feel
+Name
+Curve + When to use
+Snappy
+cubic-bezier(0.16, 1, 0.3, 1) — Primary. Feels premium. Use for reveals, entries.
+Gentle
+cubic-bezier(0.4, 0, 0.2, 1) — Hover states, micro-interactions.
+Spring
+Framer Motion spring: stiffness 300, damping 30 — Tofuda Da bounce, playful moments.
+Linear
+Linear — Only for scroll progress bars, never for reveals.
+
+Section-by-section Animation Map
+Section
+Animation
+Library
+Hero
+Text stagger reveal + parallax mountains + Tofuda Da slide in
+Framer Motion + GSAP
+Trust bar
+5 badges scroll in one by one, bounce on enter
+Framer Motion (stagger)
+Product spotlight
+Weight toggle: smooth price count-up, card flip
+Framer Motion + JS
+How to order
+3 steps draw in as user scrolls
+GSAP ScrollTrigger
+Recipes
+Cards fan out on scroll like playing cards
+Framer Motion
+Social proof
+WhatsApp screenshots slide in from right
+Framer Motion
+Tofuda Da
+Parallax float, speech bubble pop, wink on hover
+GSAP + CSS
+Page transitions
+Cream wipe left-to-right between pages
+Framer Motion AnimatePresence
+Scroll progress
+Thin green bar at top of page
+Framer Motion useScroll
+CTA button
+Subtle pulse, scale on hover, WhatsApp green flash on click
+CSS + Framer
+
+Scroll Animation Rules
+Trigger: element enters viewport at 80% (not 100% — too late)
+Stagger delay between siblings: 0.08s
+Default reveal: opacity 0→1, y: 40px→0, duration 0.7s
+Never animate more than 4 elements simultaneously
+Images: scale 1.05→1 as they enter (subtle Ken Burns feel)
+Mobile: reduce y offset to 20px, reduce duration to 0.5s
+
+Libraries
+Framer Motion — Primary. useScroll, useTransform, AnimatePresence, motion.div
+GSAP + ScrollTrigger — Complex timelines (How to order section, Tofuda Da parallax)
+Lenis — Smooth scroll inertia (lerp: 0.08). Synced with GSAP ticker.
+Spline — 3D tofu block in hero. Embed via @splinetool/react-spline.
+
+
+04. Spline 3D Integration
+What Spline does here
+Hero section mein ek 3D tofu block float karega — rotate karta hua, soft shadows ke saath. Yeh woh &quot;wow&quot; moment hai jo site ko immediately alag karta hai. Koi generic product photo nahi — ek living, breathing 3D object.
+
+Setup
+Create 3D tofu model in Spline (spline.design) — free account se shuru karo
+Export as Spline scene URL
+npm install @splinetool/react-spline @splinetool/runtime
+Lazy load it — only loads when hero is visible
+Fallback: static image if Spline fails to load (mobile ki liye)
+Important:
+Spline 3D heavy hota hai. Sirf hero mein use karo. Baaki site pe CSS animations karo. Mobile pe Spline disable karo — image fallback show karo instead.
+
+Hero Composition
+Left 50%: Headline + tagline + CTAs (text animates in staggered)
+Right 50%: Spline 3D tofu block (auto-rotates, mouse-reactive)
+Background: Illustrated SVG Himalayan mountains (parallax on scroll)
+Bottom right: Tofuda Da illustration (GSAP float animation)
+Overlay: Subtle grain texture at 3% opacity for warmth
+
+05. Components — 21st.dev + Custom
+What is 21st.dev
+21st.dev is a library of production-ready, beautifully designed React components. Copy karo, paste karo, customize karo. No AI slop — real designers ne banaye hain. Tofuda ke liye yahan se lena hai:
+
+Component
+Use in Tofuda site
+Animated counter
+Product page: weight toggle ke saath price count-up
+Magnetic button
+WhatsApp CTA button — cursor ko attract karta hai
+Marquee / ticker
+Trust bar: &quot;High Protein • Made in Nainital • Fresh Daily&quot; scroll
+Card hover reveal
+Recipe cards: hover pe ingredients fade in
+Scroll progress bar
+Top of page green progress indicator
+Text reveal
+Hero headline: words ek ek karke appear hote hain
+Parallax image
+Our story section: mountains scroll at different speeds
+Number ticker
+&quot;500+ Nainital families&quot; counter animates when in view
+
+Custom Components to Build
+1. Tofuda Da Mascot Component
+SVG illustration import (from your designer)
+GSAP float: y: -10px every 2s, ease: power1.inOut, yoyo: true
+Speech bubble: appears on hover/scroll trigger, Framer Motion scale + opacity
+Wink: CSS animation on eyes every 5s
+Mobile: static, no float (performance)
+
+2. WhatsApp CTA Button
+Pill shape, Leaf Green background, WhatsApp icon left
+Hover: scale 1.03, slight shadow, background brightens
+Click: brief green flash, then opens wa.me link with pre-filled message
+Pulse animation: subtle ring every 3s (draws attention without being annoying)
+Pre-filled message: &quot;Hi Tofuda Da! 👋 Mujhe order karna hai.&quot;
+
+3. Fresh Today Badge
+Reads stock status from Supabase in real-time
+Green: &quot;Aaj Fresh Batch Ready!&quot; with pulsing green dot
+Red: &quot;Aaj ke liye stock khatam&quot; — order button hidden
+Updates every 5 minutes via Supabase real-time subscription
+
+4. Weight Toggle + Price
+3 pill buttons: 200g / 500g / 1kg
+Active state: Forest Green bg, white text
+Price changes with Framer Motion number animation (count up/down)
+Nutrition macros also update (protein grams, calcium %)
+
+06. Full Tech Stack
+Framework &amp; Core
+Layer
+Tool + Why
+Framework
+Next.js 14 (App Router) — SSR for SEO, fast page loads, TypeScript
+Styling
+Tailwind CSS — utility classes, custom design tokens, fast iteration
+Animations
+Framer Motion + GSAP ScrollTrigger — dual library approach
+Smooth scroll
+Lenis — premium scroll inertia, synced with GSAP ticker
+3D visuals
+Spline + @splinetool/react-spline — hero tofu block only
+Components
+21st.dev (copy-paste) + shadcn/ui (base) + custom
+Icons
+Lucide React — clean, consistent, open source
+Fonts
+Next/font — self-hosted, no layout shift, optimised loading
+
+Backend &amp; Data
+Layer
+Tool + Why
+Database
+Supabase — free tier, real-time, Postgres, auth built-in
+Auth
+Supabase Auth — owner login for admin panel
+Real-time
+Supabase Realtime — stock updates, order notifications
+File storage
+Supabase Storage — product images, Tofuda Da assets
+Ordering
+WhatsApp Business API — pre-filled messages, catalog, broadcasts
+Analytics
+Google Analytics 4 — free, tracks WhatsApp click conversions
+SEO
+Next.js metadata API + sitemap.xml + robots.txt
+Hosting
+Vercel — free tier, auto-deploy from GitHub, CDN included
+
+Mobile Responsiveness Rules
+Mobile-first CSS — write mobile styles first, desktop as override
+Breakpoints: sm 640px, md 768px, lg 1024px, xl 1280px
+Spline 3D: disabled on mobile (image fallback)
+GSAP animations: simplified on mobile (less y offset, shorter duration)
+Touch-friendly: all tap targets min 44x44px
+WhatsApp button: always above fold on mobile
+Lenis: disabled on mobile (native scroll is smoother on touch)
+Images: WebP format, Next/image for automatic optimization
+Font sizes: fluid with clamp() — no fixed px on hero text
+
+
+07. Page-by-Page Spec
+Page 1 — Home (/) 
+
+The complete storytelling experience. 8 sections, each with its own motion identity.
+
+Section 1.1 — Hero
+Full viewport height (100dvh)
+Left: Headline &quot;Nainital ki taazgi, ab aapke ghar&quot; (Playfair, 80px, stagger reveal)
+Left: Subtext + 2 CTAs (WhatsApp order + Products dekho ghost button)
+Right: Spline 3D tofu block (auto-rotate, mouse parallax)
+BG: Illustrated Himalayan SVG mountains (3 layers, different parallax speeds)
+Bottom-right: Tofuda Da illustration floating
+Bottom: Scroll indicator arrow (bounces, fades out on scroll)
+Animation: All elements stagger in on load, 0.08s delay between each
+
+Section 1.2 — Trust Bar
+5 badges in a marquee/scrolling row: High Protein • Rich in Calcium • 100% Plant Based • Zero Cholesterol • Made in Nainital
+On scroll into view: badges fade+slide in staggered
+Continuous slow scroll animation on desktop (21st.dev marquee component)
+
+Section 1.3 — Product Spotlight
+Weight toggle: 200g / 500g / 1kg (pill buttons)
+Price updates with animated number transition
+Nutrition snapshot: protein grams, calcium % (animated bar fill)
+Tofuda Da speech bubble: &quot;Aaj fresh batch ready hai!&quot;
+Big WhatsApp CTA button with pulse animation
+Fresh Today badge (real-time from Supabase)
+
+Section 1.4 — How to Order (3 Steps)
+GSAP ScrollTrigger timeline: steps draw in as user scrolls
+Step 1: WhatsApp button tap — line draws from button to phone illustration
+Step 2: Address bhejo — text types itself in (typewriter effect)
+Step 3: Fresh delivery — box illustration slides in
+Tofuda Da appears next to step 3: &quot;Main deliver karunga!&quot;
+
+Section 1.5 — Recipe Teaser
+3 recipe cards: Tofu Makhani, Tofu Bhurji, Soy Paneer Tikka
+Cards fan out from center on scroll (Framer Motion rotateZ + x)
+Hover: card rises, shadow deepens, &quot;Order fresh tofu&quot; CTA appears
+&quot;Aur recipes dekho&quot; link to /recipes
+
+Section 1.6 — Social Proof
+WhatsApp order screenshots slide in from right
+Google Business rating embed
+&quot;500+ Nainital families every week&quot; — animated counter on scroll
+Tofuda Da speech bubble: &quot;Inke ghar bhi pahuncha!&quot;
+
+Page 2 — Products (/products)
+Product cards: Soy Paneer 200g, 500g, 1kg
+Each card: photo, weight, price, nutrition, WhatsApp order button
+Hover: card lift + subtle green glow border
+Entry: cards stagger in from bottom
+&quot;Fresh Today&quot; badge on hero of page
+
+Page 3 — Our Story (/story)
+Full-screen Nainital photo as hero (parallax scroll)
+Story sections scroll like a magazine feature
+Production photos: behind-the-scenes, hands-on
+Tofuda Da introduction section — his origin story
+Mountain SVG textures throughout as section dividers
+
+Page 4 — Recipes (/recipes)
+Grid of recipe cards (main SEO driver)
+Each recipe: image, title, difficulty, time, ingredients preview
+Recipe detail page: full instructions + &quot;Order fresh tofu for this recipe&quot; CTA
+Related recipes at bottom
+Schema markup for Google recipe rich results (SEO)
+
+Page 5 — Why Soy Paneer (/why)
+Comparison table: Soy Paneer vs Dairy Paneer
+Animated stat bars: protein %, calcium %, cholesterol
+Tofuda Da explains each point in speech bubbles
+Environment section: water usage, land use comparison
+
+Page 6 — Order (/order)
+Delivery zone map (static illustrated map of Nainital region)
+Coverage areas: Nainital, Haldwani, Kathgodam — toggle to see each
+Delivery slots: Morning (8-11am), Evening (4-7pm)
+Big WhatsApp button: pre-filled message with product selector
+Contact info + Google Maps embed
+
+Admin Panel (/admin) — Owner Only
+Password-protected route (Supabase Auth)
+Dashboard: today&apos;s orders, stock level, pending deliveries
+One-click stock update: &quot;Aaj ka stock&quot; number input
+Orders table: customer, product, address, status, WhatsApp link
+Status update: Pending → Confirmed → Out → Delivered (one click)
+Broadcast: select template, send to all saved customers
+Delivery zones: toggle on/off per area
+
+08. How to Build This with Claude
+The exact prompt to start
+Ek baar ye system prompt Claude Projects mein set kar do — phir sirf section ka naam bol ke code maango:
+SYSTEM PROMPT (paste this in Claude Projects):
+You are building Hills Tofuda — a Nainital soy paneer brand website. Stack: Next.js 14 App Router, TypeScript, Tailwind CSS, Framer Motion, GSAP, Lenis. Design: Playfair Display + DM Sans fonts, Forest Green (#1A4D2E) primary, Cream (#FAF7F0) background. Always give complete, copy-paste ready code. File by file. No explanations unless asked. Mobile-first. No AI slop aesthetics.
+
+Then just say:
+&quot;Hero section ka code do — Spline 3D, mountains parallax, Tofuda Da&quot;
+&quot;Trust bar component banao — marquee animation ke saath&quot;
+&quot;Product spotlight section — weight toggle aur Supabase se price&quot;
+&quot;Admin dashboard ka poora UI — orders table, stock update, broadcast&quot;
+&quot;Smooth scroll setup karo — Lenis + GSAP ticker sync&quot;
+
+09. Launch Checklist
+Before going live
+All 6 pages complete and mobile tested
+Spline scene created and embedded
+WhatsApp Business catalog set up
+Supabase tables: orders, customers, inventory, zones
+Admin panel tested — owner ne ek baar use karke dekha
+Google Analytics 4 installed and tracking WhatsApp clicks
+Google Business Profile claimed and linked
+All recipe pages have schema markup (Google rich results)
+og:image set for social sharing (product photo + Tofuda Da)
+sitemap.xml generated and submitted to Google Search Console
+Vercel custom domain connected
+Speed test: Lighthouse score 90+ on mobile
+
+Tofuda Da ready hai. Ab banao.
+hills-tofuda.vercel.app
