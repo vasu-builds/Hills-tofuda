@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
@@ -54,6 +54,14 @@ const PRODUCTS = [
 export default function ProductsPage() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <section ref={ref} className="min-h-screen pt-24 md:pt-32 pb-16 md:pb-32 bg-cream">
@@ -62,7 +70,7 @@ export default function ProductsPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE }}
           >
@@ -70,7 +78,7 @@ export default function ProductsPage() {
           </motion.div>
           <motion.h1
             className="font-display text-4xl md:text-6xl text-forest leading-tight mt-4 mb-4"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
           >
@@ -78,7 +86,7 @@ export default function ProductsPage() {
           </motion.h1>
           <motion.p
             className="font-body text-charcoal/60 text-[17px] max-w-xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >
@@ -99,7 +107,7 @@ export default function ProductsPage() {
                 }
               `}
               style={{ background: product.highlight ? 'linear-gradient(160deg, #EBF5EB 0%, #FFFFFF 100%)' : 'white' }}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: isMobile ? 0 : 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3 + i * 0.12, ease: EASE }}
             >

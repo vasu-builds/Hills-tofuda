@@ -7,7 +7,10 @@ import Image from 'next/image'
 const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function LoadingScreen() {
-  const [phase, setPhase]     = useState<'loading' | 'done' | 'gone'>('loading')
+  const [phase, setPhase]     = useState<'loading' | 'done' | 'gone'>(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('ht-visited')) return 'gone'
+    return 'loading'
+  })
   const [progress, setProgress] = useState(0)
   const [shown, setShown]     = useState(false)
   const hasRun = useRef(false)

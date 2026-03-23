@@ -62,6 +62,14 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
 export default function SocialProof() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <section
@@ -74,7 +82,7 @@ export default function SocialProof() {
         {/* Header */}
         <div className="text-center mb-14">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE }}
             className="flex items-center justify-center gap-3 mb-4"
@@ -124,7 +132,7 @@ export default function SocialProof() {
             <motion.div
               key={i}
               className="bg-white rounded-card p-5 border border-[rgba(26,77,46,0.1)] shadow-sm hover:shadow-md transition-shadow"
-              initial={{ opacity: 0, x: 40, y: 20 }}
+              initial={{ opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 0 : 20 }}
               animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.35 + i * 0.12, ease: EASE }}
             >

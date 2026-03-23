@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import TofudaDa from '@/components/ui/TofudaDa'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
@@ -74,6 +74,14 @@ export default function WhyPage() {
   const tableRef = useRef<HTMLDivElement>(null)
   const heroInView = useInView(heroRef, { once: true })
   const tableInView = useInView(tableRef, { once: true, margin: '-80px' })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <main className="bg-cream pt-24">
@@ -83,7 +91,7 @@ export default function WhyPage() {
         <div ref={heroRef} className="text-center py-16 md:py-24">
           <motion.span
             className="badge border-forest text-forest"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE }}
           >
@@ -91,7 +99,7 @@ export default function WhyPage() {
           </motion.span>
           <motion.h1
             className="font-display text-4xl md:text-7xl text-forest leading-tight mt-4 mb-4"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
           >
@@ -99,14 +107,14 @@ export default function WhyPage() {
           </motion.h1>
           <motion.p
             className="font-body text-charcoal/60 text-[17px] max-w-2xl mx-auto mb-6"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >
             Dairy paneer se better nutrition, zero cholesterol, aur environment ke liye bhi achha. Yeh sirf hum nahi keh rahe — numbers bolta hai.
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
           >
@@ -125,8 +133,8 @@ export default function WhyPage() {
         <div ref={tableRef} className="mb-20">
           <motion.h2
             className="font-display text-3xl md:text-5xl text-forest leading-tight mb-8 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={tableInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={tableInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
           >
             Soy Paneer <em>vs</em> Dairy Paneer
@@ -134,8 +142,8 @@ export default function WhyPage() {
 
           <motion.div
             className="rounded-card overflow-hidden border border-[rgba(26,77,46,0.15)] shadow-sm"
-            initial={{ opacity: 0, y: 30 }}
-            animate={tableInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={tableInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
           >
             {/* Table header */}
@@ -162,7 +170,7 @@ export default function WhyPage() {
         </div>
 
         {/* Environment section */}
-        <EnvironmentSection />
+        <EnvironmentSection isMobile={isMobile} />
 
         {/* Final CTA */}
         <div className="py-16 md:py-24 text-center">
@@ -203,7 +211,7 @@ function BenefitCard({ benefit, delay }: { benefit: typeof BENEFITS[0]; delay: n
   )
 }
 
-function EnvironmentSection() {
+function EnvironmentSection({ isMobile }: { isMobile: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -221,7 +229,7 @@ function EnvironmentSection() {
         <div>
           <motion.h2
             className="font-display text-[32px] md:text-[40px] text-cream leading-display mb-4"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
           >
@@ -229,7 +237,7 @@ function EnvironmentSection() {
           </motion.h2>
           <motion.p
             className="font-body text-cream/70 text-[16px] leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >

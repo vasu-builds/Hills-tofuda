@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import TofudaDa from '@/components/ui/TofudaDa'
@@ -10,9 +10,18 @@ const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function StoryPage() {
   const heroRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 120])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : 120])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.1])
 
   return (
     <main className="bg-cream overflow-x-hidden">
@@ -35,7 +44,7 @@ export default function StoryPage() {
         >
           <motion.span
             className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream/50 block mb-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
           >
@@ -44,7 +53,7 @@ export default function StoryPage() {
           <motion.h1
             className="font-display text-cream leading-tight mb-6"
             style={{ fontSize: 'clamp(32px, 8vw, 96px)' }}
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
           >
@@ -53,7 +62,7 @@ export default function StoryPage() {
           </motion.h1>
           <motion.p
             className="font-body text-cream/70 text-[17px] max-w-lg"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
           >
@@ -72,6 +81,7 @@ export default function StoryPage() {
           body="Nainital mein fresh food ki ek alag pehchaan hai. Yahan ke logon ko pata hai ki quality ka matlab kya hota hai — clean air, clean water, aur saaf ingredients. Hum usi philosophy ke saath soy paneer banate hain."
           imageRight="/images/product-plain.png"
           delay={0}
+          isMobile={isMobile}
         />
 
         {/* Chapter 2 */}
@@ -82,6 +92,7 @@ export default function StoryPage() {
           imageLeft="/images/tofuda-da-bowl.png"
           delay={0.1}
           tofudaDa
+          isMobile={isMobile}
         />
 
         {/* Chapter 3 */}
@@ -91,20 +102,21 @@ export default function StoryPage() {
           body="No shortcuts. Har din subah 5 baje process shuru hoti hai. Premium soy beans, Nainital ka paani, aur decades purani technique. Result — ek tofu jo paneer jaisa firm hai, bilkul fresh, aur bilkul honest."
           imageRight="/images/recipe-sesame.png"
           delay={0.1}
+          isMobile={isMobile}
         />
 
         {/* Values */}
-        <ValuesSection />
+        <ValuesSection isMobile={isMobile} />
 
         {/* Tofuda Da origin */}
-        <TofudaOriginSection />
+        <TofudaOriginSection isMobile={isMobile} />
       </div>
     </main>
   )
 }
 
 function StoryChapter({
-  number, title, body, imageRight, imageLeft, delay = 0, tofudaDa
+  number, title, body, imageRight, imageLeft, delay = 0, tofudaDa, isMobile
 }: {
   number: string
   title: string
@@ -113,6 +125,7 @@ function StoryChapter({
   imageLeft?: string
   delay?: number
   tofudaDa?: boolean
+  isMobile: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
@@ -125,7 +138,7 @@ function StoryChapter({
       {imageLeft && (
         <motion.div
           className="relative aspect-square rounded-card overflow-hidden order-1 md:order-1"
-          initial={{ opacity: 0, x: -40 }}
+          initial={{ opacity: 0, x: isMobile ? 0 : -40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay, ease: EASE }}
         >
@@ -135,7 +148,7 @@ function StoryChapter({
 
       <motion.div
         className={`flex flex-col gap-5 ${imageLeft ? 'order-2 md:order-2' : 'order-2 md:order-1'}`}
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: isMobile ? 0 : 40 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, delay: delay + 0.15, ease: EASE }}
       >
@@ -152,7 +165,7 @@ function StoryChapter({
       {imageRight && (
         <motion.div
           className="relative aspect-square rounded-card overflow-hidden order-1 md:order-2"
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: isMobile ? 0 : 40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay, ease: EASE }}
         >
@@ -163,7 +176,7 @@ function StoryChapter({
   )
 }
 
-function ValuesSection() {
+function ValuesSection({ isMobile }: { isMobile: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -178,7 +191,7 @@ function ValuesSection() {
     <div ref={ref} className="py-16 md:py-24">
       <motion.h2
         className="font-display text-3xl md:text-5xl text-forest leading-tight mb-12 text-center"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: EASE }}
       >
@@ -189,7 +202,7 @@ function ValuesSection() {
           <motion.div
             key={i}
             className="p-6 bg-white rounded-card border border-[rgba(26,77,46,0.1)] hover:border-forest/30 transition-colors"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: EASE }}
           >
@@ -203,7 +216,7 @@ function ValuesSection() {
   )
 }
 
-function TofudaOriginSection() {
+function TofudaOriginSection({ isMobile }: { isMobile: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -211,7 +224,7 @@ function TofudaOriginSection() {
     <motion.div
       ref={ref}
       className="py-16 md:py-24 flex flex-col md:flex-row items-center gap-12 text-center md:text-left"
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: isMobile ? 0 : 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: EASE }}
     >

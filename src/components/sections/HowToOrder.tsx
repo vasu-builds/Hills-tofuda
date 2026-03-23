@@ -53,23 +53,23 @@ export default function HowToOrder() {
     if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768
+
       // Set initial states
       gsap.set([step0Ref.current, step1Ref.current, step2Ref.current], {
         opacity: 0,
-        y: 50,
-        scale: 0.95,
+        y: isMobile ? 0 : 50,
+        scale: isMobile ? 1 : 0.95,
       })
       gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'left center' })
-
-      const isMobile = window.innerWidth < 768
 
       // Timeline scrubbed to scroll
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: isMobile ? 'top 80%' : 'top 65%',
-          end: isMobile ? 'bottom 90%' : 'bottom 80%',
-          scrub: 1.2,
+          start: isMobile ? 'top 85%' : 'top 65%',
+          end: isMobile ? 'bottom 95%' : 'bottom 80%',
+          scrub: isMobile ? 0.5 : 1.2,
         },
       })
 
@@ -142,8 +142,8 @@ export default function HowToOrder() {
 
           <motion.h2
             className="font-display text-3xl md:text-5xl text-cream leading-tight mt-3 mb-4"
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
           >
             Teen steps, bas
